@@ -1,0 +1,68 @@
+<form #f="ngForm" (ngSubmit)="onSubmit(f.form)" >
+    <!--local temp variable "f" is set it to the ngControl directive applied to this input field  -->
+    <!-- NAME -->
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input 
+            ngControl="name" 
+            #name="ngForm" 
+            (change) ="log(name)" 
+            id="name" 
+            type="text" 
+            class="form-control" 
+            required
+            minlength="3"/>
+        <div *ngIf="name.touched && name.errors">
+            {{name.error | json }}
+            <div 
+                class="alert alert-danger" 
+                *ngIf="name.errors.required">
+                Name is required...
+            </div>
+            <div 
+                class="alert alert-danger" 
+                *ngIf="name.errors.minlength">
+                Name should be minimum {{ name.errors.minlength.requiredLength }} characters...
+            </div>
+        </div>
+    </div>
+    <!-- EMAIL -->
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input 
+            ngControl="email" 
+            #email="ngForm" 
+            (change) ="log(email)" 
+            id="email" 
+            type="email" 
+            class="form-control" 
+            required>
+        <div 
+            class="alert alert-danger" 
+            *ngIf="email.touched && !email.valid">
+            Email is required...
+        </div>
+    </div>
+    <!-- FREQUENCY -->
+    <div class="form-group">
+        <label for="frequency">Frequency of emails</label>
+        <select 
+            ngControl="frequency"
+            #frequency="ngForm"
+            id="frequency"
+            class="form-control"
+            required>
+            <option value=""></option>
+            <option *ngFor="#frequency of frequencies" value="{{ frequency.id }}">
+                {{ frequency.label }}
+            </option>
+        </select>
+        <div 
+            class="alert alert-danger" 
+            *ngIf="frequency.touched && !frequency.valid">
+            Frequency is required...
+        </div>
+    </div>
+
+    <button class="btn btn-primary" type="submit"[disabled]="!f.valid">Subscribe</button>
+</form>
